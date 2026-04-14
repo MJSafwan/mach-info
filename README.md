@@ -1,6 +1,7 @@
 # Intro
 
 A simple Mach-O file parser made for educational purposes.
+Note: This project is still in devolopement.
 
 # Build
 
