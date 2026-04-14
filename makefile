@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 ODIR = ./tmp
 SDIR = ./src
 IDIR = $(SDIR)/include
