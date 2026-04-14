@@ -9,7 +9,7 @@ First, you need to clone the repo:
 git clone git@github.com:MJSafwan/mach-info.git
 ```
 
-After that, and assuming you have clang, you can run the command below:
+After that, you can run the command below:
 ```sh
 make
 ```
