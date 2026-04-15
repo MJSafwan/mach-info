@@ -58,30 +58,9 @@ void handle_loadcmd(loadcmd_status status, FILE* f) {
             fetal(READ_ERR_MSG, f);
             break;
         case LOADCMD_ERR_UNKNOWN_CMD:
+            /* Do nothing for now. */
             break;
         case LOADCMD_FINE:
-        default:
-            break;
-    }
-}
-
-void handle_loadcmd_sec(loadcmd_sec_status status, FILE* f) {
-    switch(status) {
-        case LOADCMD_SEC_ERR_READ:
-            fetal(READ_ERR_MSG, f);
-            break;
-        case LOADCMD_SEC_FINE:
-        default:
-            break;
-    }
-}
-
-void handle_loadcmd_symentry(loadcmd_sym_status status, FILE* f) {
-    switch(status) {
-        case LOADCMD_SYM_ERR_READ:
-            fetal(READ_ERR_MSG, f);
-            break;
-        case LOADCMD_SYM_FINE:
         default:
             break;
     }

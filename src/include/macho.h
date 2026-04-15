@@ -103,19 +103,9 @@ typedef enum {
     LOADCMD_ERR_UNKNOWN_CMD,
 } loadcmd_status;
 
-typedef enum {
-    LOADCMD_SEC_FINE,
-    LOADCMD_SEC_ERR_READ,
-} loadcmd_sec_status;
-
-typedef enum {
-    LOADCMD_SYM_FINE,
-    LOADCMD_SYM_ERR_READ,
-} loadcmd_sym_status;
-
 header_status header_get(header_macho* h, FILE* f);
 loadcmd_status loadcmd_get(loadcmd *lcmd, FILE* f);
-loadcmd_sec_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f);
-loadcmd_sym_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f);
+loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f);
+loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f);
 
 #endif

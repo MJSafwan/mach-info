@@ -34,8 +34,6 @@ void sizes_init(void);
 void fetal(char* msg, FILE* f);
 void handle_hstatus(header_status status, FILE* f);
 void handle_loadcmd(loadcmd_status status, FILE* f);
-void handle_loadcmd_sec(loadcmd_sec_status status, FILE* f);
-void handle_loadcmd_symentry(loadcmd_sym_status, FILE* f);
 void section_table_push(section_table *table, char* entry);
 
 #endif

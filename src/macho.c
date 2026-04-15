@@ -30,19 +30,19 @@ loadcmd_status loadcmd_get(loadcmd *lcmd, FILE* f) {
     return LOADCMD_FINE;
 }
 
-loadcmd_sec_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f) {
+loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f) {
     if (fread(sec, sizeof(loadcmd_sec64), 1, f) != 1) {
-        return LOADCMD_SEC_ERR_READ;
+        return LOADCMD_ERR_READ;
     }
 
-    return LOADCMD_SEC_FINE;
+    return LOADCMD_FINE;
 }
 
-loadcmd_sym_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f) {
+loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f) {
     if (fread(entry, sizeof(loadcmd_symentry), 1, f) != 1) {
-        return LOADCMD_SYM_ERR_READ;
+        return LOADCMD_ERR_READ;
     }
 
-    return LOADCMD_SYM_FINE;
+    return LOADCMD_FINE;
 }
 
