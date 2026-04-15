@@ -39,12 +39,9 @@ int main(int argc, char **argv) {
         return 1;
     }
     
-    struct stat s = {0};
-    if (stat(macho_fn, &s) == -1) {
-        perror("stat");
-        return 1;
-    }
-    int file_size = s.st_size;
+    fseek(file, 0, SEEK_END);
+    int file_size = ftell(file);
+    rewind(file);
 
     char *contents = malloc(file_size);
     if (contents == NULL) {
