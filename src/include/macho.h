@@ -1,12 +1,13 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
+
+#include "contents.h"
 
 #ifndef _MACHO_H
 #define _MACHO_H
 
 #define MAGIC64 0xfeedfacf
 #define MAGIC64_FAT 0xbebafeca 
-
 
 #define    CMD_ERR 0x0
 #define    CMD_SEG64  0x19
@@ -103,9 +104,9 @@ typedef enum {
     LOADCMD_ERR_UNKNOWN_CMD,
 } loadcmd_status;
 
-header_status header_get(header_macho* h, FILE* f);
-loadcmd_status loadcmd_get(loadcmd *lcmd, FILE* f);
-loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f);
-loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f);
+header_status header_get(header_macho* h, contents_t *contents);
+loadcmd_status loadcmd_get(loadcmd *lcmd, contents_t *contents);
+loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, contents_t *contents);
+loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, contents_t *contents);
 
 #endif

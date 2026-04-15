@@ -1,4 +1,6 @@
 #include "args.h"
+#include "globals.h"
+#include "macho.h"
 
 void parse_args(int argc, char** argv) {
     char* buff = NULL;

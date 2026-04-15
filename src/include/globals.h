@@ -1,5 +1,7 @@
 #include <stdint.h>
-#include "utils.h"
+
+#include "sectable.h"
+#include "sizes.h"
 
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
@@ -20,8 +22,6 @@ typedef struct {
 } global_options;
 
 extern size_kv cmd_sizes[CMDS_MAX_SIZE];
-extern FILE *f;
-extern section_table stable;
 
 extern global_options opts;
 

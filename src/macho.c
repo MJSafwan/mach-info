@@ -1,8 +1,8 @@
 #include "macho.h"
-#include "utils.h"
+#include "sizes.h"
 
-header_status header_get(header_macho* h, FILE* f) {
-    if(fread(h, sizeof(header_macho), 1, f) != 1) {
+header_status header_get(header_macho* h, contents_t *contents) {
+    if(contents_read(h, sizeof(header_macho), 1, SEEK, contents) != 1) {
         return HEADER_ERR_READ;
     }
 
@@ -12,34 +12,31 @@ header_status header_get(header_macho* h, FILE* f) {
     return HEADER_FINE;
 }
 
-loadcmd_status loadcmd_get(loadcmd *lcmd, FILE* f) {
-    if(fread(lcmd, sizeof(uint32_t), 2, f) != 2) {
+loadcmd_status loadcmd_get(loadcmd *lcmd, contents_t *contents) {
+    if(contents_read(lcmd, sizeof(uint32_t), 2, NO_SEEK, contents) != 2) {
         return LOADCMD_ERR_READ;
     }
 
-    (void)fseek(f, -2 * sizeof(uint32_t), SEEK_CUR);
-    
     uint32_t curr_cmd_size = 0;
     if(sizes_get(lcmd->type, &curr_cmd_size) == SIZES_NOT_FOUND) { 
-        fseek(f, lcmd->size, SEEK_CUR);
+        (void) contents_seek(lcmd->size, contents);
         return LOADCMD_ERR_UNKNOWN_CMD;   
     }
-    if (fread(&lcmd->as_cmd, curr_cmd_size, 1, f) != 1) return LOADCMD_ERR_READ;
-   //(void)fseek(f, lcmd->size-sizeof(loadcmd_seg64), SEEK_CUR);
+    if (contents_read(&lcmd->as_cmd, curr_cmd_size, 1, SEEK, contents) != 1) return LOADCMD_ERR_READ;
 
     return LOADCMD_FINE;
 }
 
-loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, FILE* f) {
-    if (fread(sec, sizeof(loadcmd_sec64), 1, f) != 1) {
+loadcmd_status loadcmd_sec_get(loadcmd_sec64 *sec, contents_t *contents) {
+    if (contents_read(sec, sizeof(loadcmd_sec64), 1, SEEK, contents) != 1) {
         return LOADCMD_ERR_READ;
     }
 
     return LOADCMD_FINE;
 }
 
-loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, FILE* f) {
-    if (fread(entry, sizeof(loadcmd_symentry), 1, f) != 1) {
+loadcmd_status loadcmd_symentry_get(loadcmd_symentry *entry, contents_t *contents) {
+    if (contents_read(entry, sizeof(loadcmd_symentry), 1, SEEK, contents) != 1) {
         return LOADCMD_ERR_READ;
     }
 

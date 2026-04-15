@@ -1,7 +1,7 @@
-#include "globals.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 #ifndef _ARGS_H
 #define _ARGS_H

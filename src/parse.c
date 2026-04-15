@@ -1,4 +1,7 @@
 #include "parse.h"
+#include "globals.h"
+#include "print.h"
+#include "handler.h"
 
 static int can_print(loadcmd cmd) {
     if (opts.parse_only != 0) {
@@ -17,52 +20,50 @@ static int can_print(loadcmd cmd) {
     return 1;
 }
 
-static void parse_cmd_seg64(loadcmd cmd) {
+static void parse_cmd_seg64(loadcmd cmd, contents_t *c, section_table *stable) {
     uint32_t nsec = cmd.as_cmd_seg64.num_of_sec;
     for (size_t k = 0; k < nsec; k++) {
         loadcmd_sec64 sec64 = {0};
-        handle_loadcmd(loadcmd_sec_get(&sec64, f), f);
+        handle_loadcmd(loadcmd_sec_get(&sec64, c));
         if (can_print(cmd)) {
             if (opts.no_sec == OFF) {
                 printf("\nSection %zu:\n\n", k);
                 print_loadcmd_sec(sec64);
             }
         }
-        section_table_push(&stable, strdup(sec64.sec_name));
+        section_table_push(stable, strdup(sec64.sec_name));
     }
 }
 
-static void parse_cmd_symtable(loadcmd cmd) {
+static void parse_cmd_symtable(loadcmd cmd, contents_t *c, section_table *stable) {
+    
     uint32_t nsym = cmd.as_cmd_symtable.number_of_symbols;
-    fpos_t pos;
 
-    (void) fgetpos(f, &pos);
+    contents_t string_c = {
+        .items = &c->items[cmd.as_cmd_symtable.string_offset],
+        .size = cmd.as_cmd_symtable.string_size,
+        .offset = 0,
+    };
 
-    char *string_table = alloca(cmd.as_cmd_symtable.string_size);
-    (void) fseek(f, cmd.as_cmd_symtable.string_offset, SEEK_SET);
-    if (fread(string_table, cmd.as_cmd_symtable.string_size, 1, f) != 1) {
-        (void) fsetpos(f, &pos);
-        return;
-    }
-
-    (void) fseek(f, cmd.as_cmd_symtable.symbol_offset, SEEK_SET);
+    contents_t sym_c = {
+        .items = &c->items[cmd.as_cmd_symtable.symbol_offset],
+        .size = nsym * sizeof(loadcmd_symentry),
+        .offset = 0,
+    };
 
     for (size_t k = 0; k < nsym; k++) {
         loadcmd_symentry entry = {0};
-        handle_loadcmd(loadcmd_symentry_get(&entry, f), f);
+        handle_loadcmd(loadcmd_symentry_get(&entry, &sym_c));
         if (can_print(cmd)) {
             if (opts.no_sym == OFF) {
                 printf("\n\nSymbol %zu:\n\n", k);
-                print_loadcmd_symbol(entry, string_table, stable);
+                print_loadcmd_symbol(entry, &string_c, stable[0]);
             }
         }
     }
-
-    (void) fsetpos(f, &pos);
-
 }
 
-void parse_cmd(loadcmd cmd, size_t i) {
+void parse_cmd(loadcmd cmd, size_t i, contents_t *c, section_table *stable) {
 
     if (can_print(cmd)) {
         printf("\n\nLoad Command %zu:\n\n", i);
@@ -71,10 +72,10 @@ void parse_cmd(loadcmd cmd, size_t i) {
 
     switch (cmd.type) {
         case CMD_SEG64:
-            parse_cmd_seg64(cmd);
+            parse_cmd_seg64(cmd, c, stable);
             break;
         case CMD_SYMTABLE:
-            parse_cmd_symtable(cmd);
+            parse_cmd_symtable(cmd, c, stable);
             break;
         default:
             break;

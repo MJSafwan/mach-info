@@ -1,31 +1,29 @@
+#include <assert.h>
+#include <fcntl.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
-#include "macho.h"
-#include "utils.h"
-#include "print.h"
-#include "globals.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+
 #include "args.h"
+#include "contents.h"
+#include "globals.h"
+#include "macho.h"
 #include "parse.h"
+#include "print.h"
+#include "handler.h"
+#include "sizes.h"
+#include "sectable.h"
 
 size_kv cmd_sizes[CMDS_MAX_SIZE] = {0};
-
-FILE *f = NULL;
-section_table stable = {0};
-
 global_options opts = {0};
 
 char *macho_fn = NULL;
 char *filename = NULL;
-
-void free_stable(void) {
-    for (size_t i = 0; i < stable.count; ++i) {
-        free(stable.items[i]);
-    }
-    free(stable.items);
-    stable.items = NULL;
-}
 
 int main(int argc, char **argv) {
     filename = skip(argc, argv);
@@ -35,27 +33,53 @@ int main(int argc, char **argv) {
         exit(1);
     }
     
-    f = fopen(macho_fn, "rb");
-    if (f == NULL) {
+    FILE *file = fopen(macho_fn, "rb");
+    if (file == NULL) {
         perror(macho_fn);
         return 1;
     }
+    
+    struct stat s = {0};
+    if (stat(macho_fn, &s) == -1) {
+        perror("stat");
+        return 1;
+    }
+    int file_size = s.st_size;
 
-    sizes_init();
-    header_macho m = {0};
-    handle_hstatus(header_get(&m, f), f);
-    parse_head(m);
-
-    for (size_t i = 0; i < m.num_of_load_cmds; ++i) {
-        loadcmd cmd = {0};
-        loadcmd_status s = loadcmd_get(&cmd, f);
-        handle_loadcmd(s, f);
-        if (s == LOADCMD_ERR_UNKNOWN_CMD) continue;
-        
-        parse_cmd(cmd, i);
+    char *contents = malloc(file_size);
+    if (contents == NULL) {
+        perror("malloc");
+        return 1;
     }
 
-    free_stable();
-    fclose(f);
+    if (fread(contents, file_size, 1, file) != 1) {
+        fetal(READ_ERR_MSG);
+    }
+
+    fclose(file);
+    contents_t c = {
+        .items = contents,
+        .size = file_size,
+        .offset = 0,
+    };
+
+    sizes_init();
+
+    header_macho m = {0};
+    handle_hstatus(header_get(&m, &c));
+    parse_head(m);
+
+    section_table stable = {0};
+    for (size_t i = 0; i < m.num_of_load_cmds; ++i) {
+        loadcmd cmd = {0};
+        loadcmd_status s = loadcmd_get(&cmd, &c);
+        handle_loadcmd(s);
+        if (s == LOADCMD_ERR_UNKNOWN_CMD) continue;
+        
+        parse_cmd(cmd, i, &c, &stable);
+    }
+
+    section_table_free(&stable);
+    free(contents);
     return 0;
 }

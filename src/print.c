@@ -1,7 +1,6 @@
 #include "print.h"
-#define LC_SEGMENT_64 "LC_SEGMENT_64"
-#define LC_MAIN "LC_MAIN"
-#define LC_SYMTAB "LC_SYMTAB"
+#include "handler.h"
+
 
 void print_header(header_macho m) {
     printf("Magic: 0x%x\n", m.magic);
@@ -59,8 +58,9 @@ void print_cmdsymtable(loadcmd_symtable l) {
     printf("Size of string table = %u\n", l.string_size);
 }
 
-void print_loadcmd_symbol(loadcmd_symentry entry, char* string_table, section_table stable) {
-    printf("String: %s (0x%x)\n", &string_table[entry.n_strx], entry.n_strx);
+void print_loadcmd_symbol(loadcmd_symentry entry, contents_t* string_table, section_table stable) {
+
+    printf("String: %s (0x%x)\n", &string_table->items[entry.n_strx], entry.n_strx);
     printf("Symbol's type: 0x%x\n", entry.n_type);
     printf("Symbol's section: %.16s (%d)\n", stable.items[entry.n_sect - 1], entry.n_sect);
     printf("Flags: 0x%x\n", entry.n_desc);
