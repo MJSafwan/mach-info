@@ -64,7 +64,7 @@ void print_loadcmd_symbol(loadcmd_symentry entry, char* string_table, section_ta
     printf("Symbol's type: 0x%x\n", entry.n_type);
     printf("Symbol's section: %.16s (%d)\n", stable.items[entry.n_sect - 1], entry.n_sect);
     printf("Flags: 0x%x\n", entry.n_desc);
-    printf("Symbol's value: 0x%llx", entry.n_value);
+    printf("Symbol's value: 0x%llx\n", entry.n_value);
 }
 
 void print_loadcmd(loadcmd lcmd) {
