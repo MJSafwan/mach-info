@@ -48,14 +48,11 @@ static void parse_cmd_seg64(loadcmd cmd, contents_t *c, section_table *stable) {
                 .offset = 0,
             };
 
-            char *buff = malloc(sec64.size);
-            contents_read(buff, sec64.size, 1, SEEK, &s);
-            if (fwrite(buff, sec64.size, 1, stdout) != 1) {
+            if (fwrite(s.items, sec64.size, 1, stdout) != 1) {
                 perror("stdout");
                 exit(1); 
             }
 
-            free(buff);
             exit(1);
         }
 
