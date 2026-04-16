@@ -21,17 +21,16 @@ A binary called *mach_info* should appear. You can run it to see all the command
 # Usage
 
 ```
-Mach-O file parser
-
 Usage: ./mach_info <filename>
 
 Options:
--h or -help              : Displays this
--head                    : Only shows header
--seg64                   : Only shows segments
--symtab                  : Only shows the symbol table
--no-head                 : Hides the header
--no-sec                  : Hides sections
--no-sym                  : Hides the symbol table entries
--seg64-info <seg64 name> : Shows information about <seg64 name>
+-h or -help                   : Displays this
+-head                         : Only shows header
+-seg64                        : Only shows segments
+-symtab                       : Only shows the symbol table
+-no-head                      : Hides the header
+-no-sec                       : Hides sections
+-no-sym                       : Hides the symbol table entries
+-seg64-info <seg64 name>      : Shows information about <seg64 name>
+-dump <seg64 name> <sec name> : Outputs the binary data of <sec name> in <seg64 name> to stdout
 ```
