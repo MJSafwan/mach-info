@@ -14,7 +14,6 @@ typedef enum {
 typedef struct {
     char *seg;
     char *sec;
-    char *out;
 } dump_t;
 
 typedef struct {

@@ -41,12 +41,6 @@ static void parse_cmd_seg64(loadcmd cmd, contents_t *c, section_table *stable) {
                 continue;
             }
 
-            FILE *out = fopen(opts.dumping.dump_info.out, "wb");
-            
-            if (out == NULL) {
-                perror(opts.dumping.dump_info.out);
-                exit(1);
-            }
 
             contents_t s = {
                 .items = &c->items[sec64.offset],
@@ -56,12 +50,11 @@ static void parse_cmd_seg64(loadcmd cmd, contents_t *c, section_table *stable) {
 
             char *buff = malloc(sec64.size);
             contents_read(buff, sec64.size, 1, SEEK, &s);
-            if (fwrite(buff, sec64.size, 1, out) != 1) {
-                perror(opts.dumping.dump_info.out);
+            if (fwrite(buff, sec64.size, 1, stdout) != 1) {
+                perror("stdout");
                 exit(1); 
             }
 
-            fclose(out);
             free(buff);
             exit(1);
         }

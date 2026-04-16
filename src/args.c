@@ -91,9 +91,8 @@ void parse_args(int argc, char** argv) {
             dump_t d = {0};
             d.seg = skip(argc, argv);
             d.sec = skip(argc, argv);
-            d.out = skip(argc, argv);
-            if (!d.seg || !d.sec || !d.out) {
-                fprintf(stderr, "\nUsage: %s -dump <seg64 name> <sec name> <out> <filename>\n", filename);
+            if (!d.seg || !d.sec) {
+                fprintf(stderr, "\nUsage: %s -dump <seg64 name> <sec name> <filename>\n", filename);
                 exit(1);
             }
             opts.dumping.dump = ON;
