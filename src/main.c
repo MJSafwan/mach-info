@@ -54,6 +54,7 @@ int main(int argc, char **argv) {
     }
 
     fclose(file);
+
     contents_t c = {
         .items = contents,
         .size = file_size,

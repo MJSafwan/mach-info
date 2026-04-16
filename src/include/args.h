@@ -18,14 +18,15 @@
 #define HELP "\nMach-O file parser\n\n"\
              USAGE\
              "\nOptions:\n"\
-             "-h or -help              : Displays this\n"\
-             "-head                    : Only shows header\n"\
-             "-seg64                   : Only shows segments\n"\
-             "-symtab                  : Only shows the symbol table\n"\
-             "-no-head                 : Hides the header\n"\
-             "-no-sec                  : Hides sections\n"\
-             "-no-sym                  : Hides the symbol table entries\n"\
-             "-seg64-info <seg64 name> : Shows information about <seg64 name>\n"\
+             "-h or -help                         : Displays this\n"\
+             "-head                               : Only shows header\n"\
+             "-seg64                              : Only shows segments\n"\
+             "-symtab                             : Only shows the symbol table\n"\
+             "-no-head                            : Hides the header\n"\
+             "-no-sec                             : Hides sections\n"\
+             "-no-sym                             : Hides the symbol table entries\n"\
+             "-seg64-info <seg64 name>            : Shows information about <seg64 name>\n"\
+             "-dump <seg64 name> <sec name> <out> : Outputs the binary data of <sec name> in <seg64 name> to <out> file\n"\
 
 void parse_args(int argc, char** argv);
 

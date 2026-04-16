@@ -4,6 +4,7 @@
 #include "handler.h"
 
 static int can_print(loadcmd cmd) {
+    if (opts.silence == ON) return 0;
     if (opts.parse_only != 0) {
         if (cmd.type == opts.parse_only) return 1;
         return 0;
@@ -31,6 +32,40 @@ static void parse_cmd_seg64(loadcmd cmd, contents_t *c, section_table *stable) {
                 print_loadcmd_sec(sec64);
             }
         }
+
+        if (opts.dumping.dump == ON) {
+            if (strcmp(opts.dumping.dump_info.seg, sec64.seg_name) != 0) {
+                continue;
+            }
+            if (strcmp(opts.dumping.dump_info.sec, sec64.sec_name) != 0) {
+                continue;
+            }
+
+            FILE *out = fopen(opts.dumping.dump_info.out, "wb");
+            
+            if (out == NULL) {
+                perror(opts.dumping.dump_info.out);
+                exit(1);
+            }
+
+            contents_t s = {
+                .items = &c->items[sec64.offset],
+                .size = sec64.size,
+                .offset = 0,
+            };
+
+            char *buff = malloc(sec64.size);
+            contents_read(buff, sec64.size, 1, SEEK, &s);
+            if (fwrite(buff, sec64.size, 1, out) != 1) {
+                perror(opts.dumping.dump_info.out);
+                exit(1); 
+            }
+
+            fclose(out);
+            free(buff);
+            exit(1);
+        }
+
         section_table_push(stable, strdup(sec64.sec_name));
     }
 }
@@ -84,7 +119,7 @@ void parse_cmd(loadcmd cmd, size_t i, contents_t *c, section_table *stable) {
 }
 
 void parse_head(header_macho m) {
-    if (opts.no_head == OFF) {
+    if (opts.no_head == OFF && opts.silence == OFF) {
         if (opts.head == ON) {
             print_header(m);
             exit(0);

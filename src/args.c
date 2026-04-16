@@ -86,6 +86,22 @@ void parse_args(int argc, char** argv) {
             opts.no_sym = ON;
             continue;
         }
+
+        if (strcmp(buff, "-dump") == 0) {
+            dump_t d = {0};
+            d.seg = skip(argc, argv);
+            d.sec = skip(argc, argv);
+            d.out = skip(argc, argv);
+            if (!d.seg || !d.sec || !d.out) {
+                fprintf(stderr, "\nUsage: %s -dump <seg64 name> <sec name> <out> <filename>\n", filename);
+                exit(1);
+            }
+            opts.dumping.dump = ON;
+            opts.dumping.dump_info = d;
+            opts.silence = ON;
+
+            continue;
+        }
         
         UNKNOWN(buff, filename);
     } while (buff != NULL);
