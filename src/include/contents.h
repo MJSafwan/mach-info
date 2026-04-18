@@ -1,7 +1,6 @@
-#include <string.h>
 
-#ifndef _CONTENTS_H
-#define _CONTENTS_H
+#ifndef CONTENTS_H_
+#define CONTENTS_H_
 
 typedef struct {
     char *items;

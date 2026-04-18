@@ -3,8 +3,8 @@
 
 #include "contents.h"
 
-#ifndef _MACHO_H
-#define _MACHO_H
+#ifndef MACHO_H_
+#define MACHO_H_
 
 #define MAGIC64 0xfeedfacf
 #define MAGIC64_FAT 0xbebafeca 

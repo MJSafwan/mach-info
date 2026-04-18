@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "contents.h"
 
 size_t contents_read(void *buf, size_t size, size_t num, read_type type, contents_t *contents) {

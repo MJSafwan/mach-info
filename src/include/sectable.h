@@ -1,8 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
 
-#ifndef _SECTABLE_H
-#define _SECTABLE_H
+#ifndef SECTABLE_H_
+#define SECTABLE_H_
 
 typedef struct {
     char **items;

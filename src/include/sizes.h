@@ -1,11 +1,7 @@
-#include <assert.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 
-#ifndef _SIZES_H
-#define _SIZES_H
+#ifndef SIZES_H_
+#define SIZES_H_
 
 #define CMDS_MAX_SIZE 256
 

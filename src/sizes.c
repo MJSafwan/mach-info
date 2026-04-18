@@ -1,3 +1,8 @@
+#include <assert.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "sizes.h"
 #include "macho.h"
 

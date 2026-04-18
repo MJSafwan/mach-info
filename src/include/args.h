@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-
-#ifndef _ARGS_H
-#define _ARGS_H
+#ifndef ARGS_H_
+#define ARGS_H_
 
 #define skip(c, v) (c>0 ? (c--, v = &v[1], v[-1]) : NULL)
 #define USAGE "Usage: %s <filename>\n"

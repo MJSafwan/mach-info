@@ -3,8 +3,8 @@
 #include "sectable.h"
 #include "sizes.h"
 
-#ifndef _GLOBALS_H
-#define _GLOBALS_H
+#ifndef GLOBALS_H_
+#define GLOBALS_H_
 
 typedef enum {
     OFF,

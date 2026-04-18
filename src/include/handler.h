@@ -1,12 +1,7 @@
-#include <assert.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "macho.h"
 
-#ifndef _HANDLER_H
-#define _HANDLER_H
+#ifndef HANDLER_H_
+#define HANDLER_H_
 
 #define READ_ERR_MSG "An error happened while reading the file!"
 

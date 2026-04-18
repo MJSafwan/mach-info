@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "sectable.h"
 
 void section_table_push(section_table *table, char* entry) {

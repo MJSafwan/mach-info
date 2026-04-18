@@ -1,6 +1,7 @@
+#include <stdio.h>
+
 #include "print.h"
 #include "handler.h"
-
 
 void print_header(header_macho m) {
     printf("Magic: 0x%x\n", m.magic);

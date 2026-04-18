@@ -1,10 +1,9 @@
-#include <stdio.h>
 
 #include "macho.h"
 #include "sectable.h"
 
-#ifndef _PRINT_H
-#define _PRINT_H
+#ifndef PRINT_H_
+#define PRINT_H_
 
 #define LC_SEGMENT_64 "LC_SEGMENT_64"
 #define LC_MAIN "LC_MAIN"
