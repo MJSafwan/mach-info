@@ -8,7 +8,7 @@ A simple Mach-O file parser made for educational purposes.
 
 First, you need to clone the repo:
 ```sh
-git clone git@github.com:MJSafwan/mach-info.git
+git clone https://github.com/MJSafwan/mach-info.git
 ```
 
 After that, you can run the command below:
